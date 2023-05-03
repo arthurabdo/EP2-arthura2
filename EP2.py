@@ -34,7 +34,7 @@ def posiciona_frota(frota):
 def afundados(frota, tabuleiro):
     navios_afundados = 0
     
-    for navio, posicoes in frota.items():
+    for navio,  posicoes in frota.items():
         for posicoes in posicoes:
             afundado = True
             for posicao in posicoes:
