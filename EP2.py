@@ -58,3 +58,34 @@ def posicao_valida(dicio_navios, linha, coluna, orientacao, tamanho):
     if dicio_navios=={}:
         return True
     return True
+
+frota = {}
+nome_navios = ['porta-aviões', 'navio-tanque', 'contratorpedeiro', 'submarino']
+for nome in frota.keys():
+    n=0
+    if nome =='porta=aviões':
+        i=1
+    elif nome == 'navio-tanque':
+        i=2
+    elif nome == 'contratorpedo':
+        i=3
+    elif nome == 'submarino':
+        i=4
+    while n<1:
+        print(f'Insira as informacoes referentes ao navio {nome} que possui tamanho {tamanho[nome]}')
+        linha=int(input('Qual linha?'))
+        coluna=int(input('Qual coluna?'))
+        if nome!= 'submarino':
+            direcao=input('[1] vertical [2] horizontal')
+        if nome== 'submarino':
+            orientacao='vertical'
+        if direcao== '1':
+            orientacao='vertical'
+        elif direcao== '2':
+            orientacao='horizontal'
+        if posicao_valida(frota, linha,coluna, orientacao,tamanho[nome])== False:
+            print('Esta posicao nao esta valida!')
+        else:
+            preenche_frota(frota,linha,coluna,orientacao,tamanho[nome])
+            n+=1
+print (frota)
