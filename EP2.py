@@ -31,18 +31,6 @@ def posiciona_frota(frota):
             for linha, coluna in posicoes:
                 grid[linha][coluna] = 1
     return grid
-def posicao_valida(dicio_navios, linha, coluna, orientacao, tamanho):
-    navio=define_posicoes(linha, coluna,orientacao,tamanho)
-    for n in navio:
-        if n[0]<0 or n[1]<0 or n[0]>9 or n[1]>9:
-            return False
-        for i in dicio_navios.values():
-            for j in range(len(i)):
-                if n in i[j]:
-                    return False
-    if dicio_navios=={}:
-        return True
-    return True
 def afundados(frota, tabuleiro):
     navios_afundados = 0
     
@@ -58,3 +46,15 @@ def afundados(frota, tabuleiro):
                 navios_afundados += 1
                 
     return navios_afundados
+def posicao_valida(dicio_navios, linha, coluna, orientacao, tamanho):
+    navio=define_posicoes(linha, coluna,orientacao,tamanho)
+    for n in navio:
+        if n[0]<0 or n[1]<0 or n[0]>9 or n[1]>9:
+            return False
+        for i in dicio_navios.values():
+            for j in range(len(i)):
+                if n in i[j]:
+                    return False
+    if dicio_navios=={}:
+        return True
+    return True
