@@ -46,6 +46,7 @@ def afundados(frota, tabuleiro):
                 navios_afundados += 1
                 
     return navios_afundados
+
 def posicao_valida(dicio_navios, linha, coluna, orientacao, tamanho):
     navio=define_posicoes(linha, coluna,orientacao,tamanho)
     for n in navio:
