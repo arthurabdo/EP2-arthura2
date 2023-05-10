@@ -1,3 +1,5 @@
+import random
+
 def define_posicoes(linha, coluna, orientacao, tamanho):
     posicoes = []
     if orientacao == "vertical":
@@ -133,3 +135,85 @@ for embarcacao, qtde in dicionario_embarcacoes.items():
                 frota = preenche_frota(frota, embarcacao, linha, coluna, orientacao, qtde[1])
 
 print(frota)
+
+frota_oponente = {
+    'porta-aviões': [
+        [[9, 1], [9, 2], [9, 3], [9, 4]]
+    ],
+    'navio-tanque': [
+        [[6, 0], [6, 1], [6, 2]],
+        [[4, 3], [5, 3], [6, 3]]
+    ],
+    'contratorpedeiro': [
+        [[1, 6], [1, 7]],
+        [[0, 5], [1, 5]],
+        [[3, 6], [3, 7]]
+    ],
+    'submarino': [
+        [[2, 7]],
+        [[0, 6]],
+        [[9, 7]],
+        [[7, 6]]
+    ]
+}
+tabuleiro_oponente = posiciona_frota(frota_oponente)
+
+def monta_tabuleiros(tabuleiro_jogador,  tabuleiro_oponente):
+    texto = ''
+    texto += '   0  1  2  3  4  5  6  7  8  9         0  1  2  3  4  5  6  7  8  9\n'
+    texto += '___________      ___________\n'
+
+    for linha in range(len(tabuleiro_jogador)):
+        info_jogador = '  '.join([str(item) for item in tabuleiro_jogador[linha]])
+        info_oponente = '  '.join([info if str(info) in 'X-' else '0' for info in tabuleiro_oponente[linha]])
+        texto += f'{linha}| {info_jogador}|     {linha}| {info_oponente}|\n'
+    return texto
+grade_frota = posiciona_frota(frota)
+grade_oponente = posiciona_frota(frota_oponente)
+primeiro_ataque_jogador = []
+primeiro_ataque_oponente = []
+jogando = True
+while jogando == True:
+    grade = monta_tabuleiros(grade_frota, grade_oponente)
+    print(grade)
+    repete = True
+    while repete == True:
+        linha = True
+        coluna = True
+        while linha == True:
+            linha_do_ataque = int(input('Jogador, qual linha deseja atacar?'))
+            if linha_do_ataque < 0 or linha_do_ataque > 9:
+                print('Linha inválida')
+            else:
+                linha = False
+        while coluna == True:
+            coluna_do_ataque = int(input('Jogador, qual coluna deseja atacar?'))
+            if coluna_do_ataque < 0 or coluna_do_ataque > 9:
+                print('Coluna inválida!')
+            else:
+                coluna = False
+        novo_ataque = [linha_do_ataque, coluna_do_ataque]
+        if novo_ataque in primeiro_ataque_jogador:
+            print(f'A posição linha {linha_do_ataque} e coluna {coluna_do_ataque} já foi informada anteriormente')
+        else:
+            repete = False
+    primeiro_ataque_jogador.append(novo_ataque)
+    grade_oponente = faz_jogada(grade_oponente, linha_do_ataque, coluna_do_ataque)
+    barcos_afundados = afundados(frota_oponente, grade_oponente)
+    if barcos_afundados == 10:
+        jogando = False
+        print('Parabéns! Você derrubou todos os navios do seu oponente! ;)')
+    else:
+            segunda_jogada = True
+            while segunda_jogada:
+                linha1 = random.randint(0, 9)
+                coluna2 = random.randint(0, 9)
+                ataque_oponente = [linha1, coluna2]
+                if ataque_oponente not in primeiro_ataque_oponente:
+                    print(f'Seu oponente está atacando na linha {linha1} e coluna {coluna2}')
+                    primeiro_ataque_oponente.append(ataque_oponente)
+                    grade_frota = faz_jogada(grade_frota, linha1, coluna2)
+                    segunda_jogada = False
+            if afundados(frota, grade_frota) == 10:
+                jogando = False
+                print('Opa! O oponente derrubou toda a sua frota! :( ')
